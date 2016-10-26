@@ -1,0 +1,17 @@
+<span style="font-family:"Helvetica Neue","Helvetica","Arial",sans-serif;font-size:14px;background-color:#fff"><html>
+<head>
+    <title>Guess A Number</title>
+</head>
+<body>
+{{ message }}
+    <form method="POST" action="">
+        {% if correct %}
+            <input type="submit" value="Play Again">
+        {% else %}
+             <input type="textfield" name="guess">
+             <input type="hidden" name="number_to_guess" value="{{ number }}">
+        {% endif %}
+    {{ guess }}
+    </form>
+</body>
+</html>Some essential features which make your life much easier:</span>
