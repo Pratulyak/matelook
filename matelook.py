@@ -43,52 +43,94 @@ def login():
 		for row in curs.fetchall():
 			mates.append(row[0])
 			mateImages.append(row[1])
+		messageType = "post"
+		curs.execute("select * from messages where from_user=(?) and type =(?)",(zid,str(messageType)))
+		postRS = curs.fetchall()
+		commentRS = []
+		#replyRS 
+		for t in postRS:
+			messageType = "comment"
+			index_path = t[12]
+			index_path += "%"
+			curs.execute("select * from messages where index_path like (?) and type=(?) order by rowid",(index_path,str(messageType)))
+			commentRS.append(curs.fetchone())
+
+			#for k in commentRS:
+			#	messageType = "reply"
+			#	curs.execute("select * from messages where parent_msg_dir=(?) and type=(?)",(k[9],str(messageType)))
+			#	replyRS.append(curs.fetchall())
+
 
 	if password == passw:
 		session['user'] = zid
 		g.user = session['user']
 		return render_template("profile.html", zid=zid, image=image,name=fullname,email=email,program=program,suburb=homesuburb
-		,longitude=longitude,latitude=latitude,birthday=birthday,mates=mates,mateImages=mateImages)
+		,longitude=longitude,latitude=latitude,birthday=birthday,mates=mates,mateImages=mateImages, postRS=postRS,commentRS=commentRS)
 	else:
 		return render_template("login.html",error=error)
 
 
 @app.route('/viewProfile',methods=['POST','GET'])
 def viewProfile():
-
-	temp = request.form['profileID']
+	profileID = request.form['profileID']
 	root = request.form['rootID']
-	submit = request.form['profileID']
-	if temp == root:
-		submit = request.form['rootID']
-
-	return render_template("guess.html",submit=submit,rootid=root)
-"""	if request.form['submit'] == "My Profile":
-		curs.execute("select * from User where zid = (?)",(root,))
-	elif request.form['submit'] == "View Profile":
-		curs.execute("select * from User where zid = (?)",(temp,))
-	for temp in curs.fetchall():
+	if profileID == root:
+		curs.execute("select * from User where zid = (?)",(profileID,))
+		for temp in curs.fetchall():
 			#temp = curs.fetchall()
 			#temp =temp.split(",")
-		zid = temp[0]
-		fullname = temp[1]
-		email = temp[2]
-		program = temp[4]
-		homesuburb= temp[6]
-		longitude = temp[9]
-		latitude = temp[10]
-		birthday = temp[11]
-		image =  "dataset/" + zid + "/profile.jpg"#temp[12]
-		password=temp[3]
-	curs.execute("select zidB,profile from mates where zidA = (?)",(zid,))
-	mates = []
-	mateImages= []
-	for row in curs.fetchall():
-		mates.append(row[0])
-		mateImages.append(row[1])
+			zid = temp[0]
+			fullname = temp[1]
+			email = temp[2]
+			program = temp[4]
+			homesuburb= temp[6]
+			longitude = temp[9]
+			latitude = temp[10]
+			birthday = temp[11]
+			password=temp[3]
+			image =  "dataset/" + root + "/profile.jpg"#temp[12]
+		curs.execute("select zidB,profile from mates where zidA = (?)",(root,))
+		mates = []
+		mateImages= []
+		messageType = "post"
+		curs.execute("select * from messages where from_user=(?) and type =(?)",(profileID,str(messageType)))
+		postRS = curs.fetchall()
 
-	
-	session['user'] = zid
+		for row in curs.fetchall():
+			mates.append(row[0])
+			mateImages.append(row[1])
+		return render_template("profile.html", zid=root, image=image,name=fullname,email=email,program=program,suburb=homesuburb,longitude=longitude,latitude=latitude,birthday=birthday,mates=mates,mateImages=mateImages,postRS=postRS)
+	else:
+		curs.execute("select * from User where zid = (?)",(profileID,))
+		for temp in curs.fetchall():
+			#temp = curs.fetchall()
+			#temp =temp.split(",")
+			zidB = temp[0]
+			fullname = temp[1]
+			email = temp[2]
+			program = temp[4]
+			homesuburb= temp[6]
+			longitude = temp[9]
+			latitude = temp[10]
+			birthday = temp[11]
+			image =  "dataset/" + zidB + "/profile.jpg"#temp[12]
+			password=temp[3]
+		
+		curs.execute("select zidB,profile from mates where zidA = (?)",(profileID,))
+		mates = []
+		mateImages= []
+		for row in curs.fetchall():
+			mates.append(row[0])
+			mateImages.append(row[1])
+		messageType = "post"
+		curs.execute("select * from messages where from_user=(?) and type =(?)",(zidB,str(messageType)))
+		postRS1 = curs.fetchall()
+
+		return render_template("viewProfile.html", zid=zidB, image=image,name=fullname,email=email,program=program,suburb=homesuburb
+		,longitude=longitude,latitude=latitude,birthday=birthday,mates=mates,mateImages=mateImages,root=root,postRS=postRS1)
+		"""
+		return render_template("guess.html",submit=temp)
+		session['user'] = zid
 	g.user = session['user']
 	return render_template("profile.html",rootid=root, zid=zid, image=image,name=fullname,email=email,program=program,suburb=homesuburb
 		,longitude=longitude,latitude=latitude,birthday=birthday,mates=mates,mateImages=mateImages)
@@ -109,6 +151,15 @@ def search():
 	curs.execute("select * from User where full_name LIKE (?)",(searchString,))
 	searchList = curs.fetchall()
 	return render_template('searchResults.html',results=searchList,zid=root)
+
+@app.route('/searchPost',methods=['POST','GET'])
+def searchPost():
+	searchString = request.form['postsearch']
+	searchString += '%'
+	root = request.form['profileID']
+	curs.execute("select * from messages where message LIKE (?) and type = 'post'",(searchString,))
+	searchList = curs.fetchall()
+	return render_template('postSearch.html',results=searchList,zid=root)
 # your css, js, images, and anything that you wouldn't want CGI to execute, but the user should see go in the "static" directory during testing
 # During production, it's advisable to set this up to be served by apache instead
 @app.route('/static/<path:path>')
