@@ -1,0 +1,90 @@
+
+<!DOCTYPE HTML>
+<!--
+    Linear by TEMPLATED
+    templated.co @templatedco
+    Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+
+<html>
+    <head>
+        <title>Matelook</title>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <meta name="description" content="" />
+        <meta name="keywords" content="" />
+        <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,300,700,500,900' rel='stylesheet' type='text/css'>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        
+        
+        
+        <script src="js/skel.min.js"></script>
+        <script src="js/skel-panels.min.js"></script>
+        <script src="js/init.js"></script>
+
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+        <link rel="stylesheet" href="static/css/skel-noscript.css" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="static/css/style.css" />
+        <link rel="stylesheet" href="static/css/style-desktop.css" />
+    </head>
+    <body class="homepage">
+<!-- Header -->
+        <div id="header">
+            <div id="nav-wrapper"> 
+                <!-- Nav -->
+                <form action="search" method="POST">
+                <nav id="nav">
+                    <ul>
+                        <li><input type="submit" name="myprofile" value="My Profile"><input type="hidden" name="profileID" value="{{zid}}">
+                        <li class="active"><input type="text" name="matesearch" placeholder="Search Mates"></li>
+                        <li><input type="submit" name="search" value="Search">
+                        <input type="hidden" name="profileID" value="{{zid}}"></ins></li>
+
+                    </ul>
+                </nav>
+                </form>
+            </div>
+        </div>
+    <!-- Header --> 
+        <!-- Main -->
+        <div id="main">
+            <div class="container">
+                <div class="row">
+                    <!-- Content -->
+                    <div class="container"  align="center">
+                    <header><h2>Results</h2></header>
+                    <div class="container">
+                        <section>
+                        <div class="container" align="center">
+                        <table cellspacing="pixels">
+                            {%for row in results:%}                     
+                                <div class="container">
+                                <tr>
+                                    <td><img src="static/{{row[12]}}" height="50" width="50"></td>
+                                    <td><p style="margin-left: 50px">{{row[2]}}<br>
+                                    {{row[4]}}</td>
+                                    <td>
+                                    <form action="viewProfile" method="POST">
+                                    <p style="margin-left: 50px">
+                                        <input type="submit" name="profile" value="View Profile">
+                                        <input type="hidden" name="profileID" value="{{row[0]}}">
+                                    </form></td>
+                                </tr>
+                                </div>
+                            
+                            {%endfor%}
+                        </table>
+                        </div>
+                        </section>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    <!-- /Main -->
+    </body>

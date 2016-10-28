@@ -1,17 +1,103 @@
-<span style="font-family:"Helvetica Neue","Helvetica","Arial",sans-serif;font-size:14px;background-color:#fff"><html>
-<head>
-    <title>Guess A Number</title>
-</head>
-<body>
-{{ message }}
-    <form method="POST" action="">
-        {% if correct %}
-            <input type="submit" value="Play Again">
-        {% else %}
-             <input type="textfield" name="guess">
-             <input type="hidden" name="number_to_guess" value="{{ number }}">
-        {% endif %}
-    {{ guess }}
-    </form>
-</body>
-</html>Some essential features which make your life much easier:</span>
+<!DOCTYPE HTML>
+<!--
+    Linear by TEMPLATED
+    templated.co @templatedco
+    Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+<html>
+    <head>
+        <title>Matelook</title>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <meta name="description" content="" />
+        <meta name="keywords" content="" />
+        <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,300,700,500,900' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="static/slick/slick.css"/>
+  <link rel="stylesheet" type="text/css" href="static/slick/slick-theme.css"/>
+  </head>
+  <body>
+
+  <div class="your-class">
+    <div>your content</div>
+    <div>your content</div>
+    <div>your content</div>
+     <script type="text/javascript">
+    $(document).ready(function(){
+      $('.your-class').slick({
+        setting-name: setting-value
+      });
+    });
+  </script>
+  </div>
+
+  <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+  <script type="text/javascript" src="slick/slick.min.js"></script>
+
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $('.your-class').slick({
+        setting-name: setting-value
+      });
+    });
+  </script>
+
+  <script type="text/javascript">
+      $('.responsive').slick({
+  dots: true,
+  infinite: false,
+  speed: 300,
+  slidesToShow: 4,
+  slidesToScroll: 4,
+  responsive: [
+    {
+      breakpoint: 1024,
+      settings: {
+        slidesToShow: 3,
+        slidesToScroll: 3,
+        infinite: true,
+        dots: true
+      }
+    },
+    {
+      breakpoint: 600,
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 2
+      }
+    },
+    {
+      breakpoint: 480,
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1
+      }
+    }
+    // You can unslick at a given breakpoint now by adding:
+    // settings: "unslick"
+    // instead of a settings object
+  ]
+});
+  </script>
+<script type="text/javascript">
+$(document).ready(function(){
+  $('.slider1').bxSlider({
+    slideWidth: 200,
+    minSlides: 2,
+    maxSlides: 3,
+    slideMargin: 10
+  });
+});</script>
+{{submit}} <br>
+{{rootid}}
+<div class="slider1">
+  <div class="slide"><img src="http://placehold.it/350x150&text=FooBar1"></div>
+  <div class="slide"><img src="http://placehold.it/350x150&text=FooBar2"></div>
+  <div class="slide"><img src="http://placehold.it/350x150&text=FooBar3"></div>
+  <div class="slide"><img src="http://placehold.it/350x150&text=FooBar4"></div>
+  <div class="slide"><img src="http://placehold.it/350x150&text=FooBar5"></div>
+  <div class="slide"><img src="http://placehold.it/350x150&text=FooBar6"></div>
+  <div class="slide"><img src="http://placehold.it/350x150&text=FooBar7"></div>
+  <div class="slide"><img src="http://placehold.it/350x150&text=FooBar8"></div>
+  <div class="slide"><img src="http://placehold.it/350x150&text=FooBar9"></div>
+</div>
+    </body>
