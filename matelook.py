@@ -4,6 +4,7 @@ from flask import Flask, render_template, request, session , g
 import sqlite3
 import re
 import os
+import datetime
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
@@ -44,7 +45,7 @@ def login():
 			mates.append(row[0])
 			mateImages.append(row[1])
 		messageType = "post"
-		curs.execute("select * from messages where from_user=(?) and type =(?)",(zid,str(messageType)))
+		curs.execute("select * from messages where from_user=(?) and type =(?) order by time",(zid,str(messageType)))
 		postRS = curs.fetchall()
 		commentRS = []
 		#replyRS 
@@ -69,7 +70,18 @@ def login():
 	else:
 		return render_template("login.html",error=error)
 
+@app.route('/updatePost',methods=['POST','GET'])
+def updatePost():
 
+	Message = request.form['message']
+	fromuser = request.form['profileID']
+	postype = "post"
+
+	time = datetime.datetime.now()
+
+	curs.execute("insert into messages ('from_user','message','time','type') values((?),(?),(?),(?))",(fromuser,Message,time,postype))
+
+	return render_template("guess.html")
 @app.route('/viewProfile',methods=['POST','GET'])
 def viewProfile():
 	profileID = request.form['profileID']

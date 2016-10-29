@@ -117,12 +117,15 @@
 
                            
                               <div class="well"> 
-                                   <form class="form-horizontal" role="form">
+                                   <form method="post" action="updatePost">
                                     <h4>What's New</h4>
                                      <div class="form-group" style="padding:14px;">
-                                      <textarea class="form-control" placeholder="Update your status"></textarea>
+                                      <input type="text" name="message" class="form-control input-lg" placeholder="Make a new post!" width="48">
                                     </div>
-                                    <button class="btn btn-primary pull-right" type="button">Post</button><ul class="list-inline"><li><a href=""><i class="glyphicon glyphicon-upload"></i></a></li><li><a href=""><i class="glyphicon glyphicon-camera"></i></a></li><li><a href=""><i class="glyphicon glyphicon-map-marker"></i></a></li></ul>
+                                    <div class="container" align="left">
+                                    <input type="submit" name="updatePost" value="Post">
+                                    <input type="hidden" name="profileID" value="{{zid}}">
+                                    </div>
                                   </form>
                               </div>                           
                           </div>

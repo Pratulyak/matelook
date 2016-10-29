@@ -105,18 +105,29 @@
                         <!-- content -->                      
                         <div class="row">
                           <!-- main col right -->
-                          <div class="col-sm-7">
-                                <div class="well"> 
-                                   <form class="form">
-                                    <h4>Sign-up</h4>
+                            <div class="well"> 
+                                   
+                                    <h4>Search Mates</h4>
                                     <div class="input-group text-center">
-                                    <input type="text" class="form-control input-lg" placeholder="Enter your email address">
-                                      <span class="input-group-btn"><button class="btn btn-lg btn-primary" type="button">OK</button></span>
+                                    <form action="search" method="POST">
+                                       <p><input type="text" class="form-control input-lg" placeholder="Search Mates" name="matesearch"><br><input type="submit" name="mateSearch" value="Search">
+                                       <input type="hidden" name="profileID" value="{{zid}}"><p>
+                                    </form>
                                     </div>
-                                  </form>
                                 </div>
-                               {%for row in results:%} 
+                                 <div class="well"> 
+                                   
+                                    <h4>Search Posts</h4>
+                                    <div class="input-group text-center">
+                                    <form action="searchPost" method="POST">
+                                       <p><input type="text" class="form-control input-lg" placeholder="Search Mates" name="postsearch"><br><input type="submit" name="mateSearch" value="Search">
+                                       <input type="hidden" name="profileID" value="{{zid}}"><p>
+                                    </form>
+                                    </div>
+                                </div>
+                                
                                <div class="panel panel-default">
+                               {%for row in results:%}
                                  <div class="panel-heading"><a href="#" class="pull-right">View all</a>
                                  <img src="static/{{row[12]}}" height="50" width="50"> {{row[1]}}
                                  </div>
@@ -125,8 +136,9 @@
                                     {{row[2]}}
                                     {{row[4]}}
                                     </p>
-                               </div>
+                                </div>
                                 {%endfor%}
+                                </div>
 
                        </div><!--/row-->
                       
