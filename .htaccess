@@ -1,0 +1,3 @@
+<Files "matelook.cgi">
+SetHandler application/x-setuid-cgid
+</Files>

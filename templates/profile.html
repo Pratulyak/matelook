@@ -52,7 +52,7 @@
             <!-- main right col -->
             <div class="column col-sm-10 col-xs-11" id="main">
                 
-                <!-- top nav -->
+                         <!-- top nav -->
                 <div class="navbar navbar-blue navbar-static-top">  
                     <div class="navbar-header">
                       <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse">
@@ -64,32 +64,19 @@
                       <a href="/" class="navbar-brand logo">b</a>
                     </div>
                     <nav class="collapse navbar-collapse" role="navigation">
-                    <ul class="nav navbar-nav">
-                      <li>
-                        <a href="#"><i class="glyphicon glyphicon-home"></i> Home</a>
-                      </li>
-                      <li>
-                        <a href="#postModal" role="button" data-toggle="modal"><i class="glyphicon glyphicon-plus"></i> Post</a>
-                      </li>
-                      <li>
-                        <a href="#"><span class="badge">badge</span></a>
-                      </li>
-                    </ul>
                     <ul class="nav navbar-nav navbar-right">
                       <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i></a>
-                        <ul class="dropdown-menu">
-                          <li><a href="">More</a></li>
-                          <li><a href="">More</a></li>
-                          <li><a href="">More</a></li>
-                          <li><a href="">More</a></li>
-                          <li><a href="">More</a></li>
-                        </ul>
+                        <br>  
+                         <form action="viewProfile" method="POST" >
+                                    <input type="submit" name="viewProfile" value="Home">
+                                    <input type="hidden" name="profileID" value="{{zid}}">
+                                    <input type="hidden" name="rootID" value="{{zid}}">
+                        </form>
                       </li>
                     </ul>
                     </nav>
                 </div>
-                <!-- /top nav -->
+                <!-- end top nav -->
               
                 <div class="padding">
                     <div class="full col-sm-9">
@@ -156,7 +143,6 @@
 
                        </div><!--/row-->
                           <div class="col-sm-7">
-
                                {%for row in postRS:%} 
                                <div class="panel panel-default">
                                  <div class="panel-heading"><a href="#" class="pull-right">View all</a> <h4>{{row[5]}}</h4></div>
@@ -165,12 +151,6 @@
                                     {{row[2]}}
                                     </p>
                                     <div class="clearfix"></div>
-                                    <h3>Comments</h3>
-                                    <hr>
-                                    {%for temp in commentRS:%} 
-                                      {{temp[2]}}<br>
-                                    {%endfor%}
-                                    {{commentRS[postRS.index(row)][2]}}
                                   </div>
                                </div>
                                 {%endfor%}

@@ -52,7 +52,7 @@
             <!-- main right col -->
             <div class="column col-sm-10 col-xs-11" id="main">
                 
-                <!-- top nav -->
+                   <!-- top nav -->
                 <div class="navbar navbar-blue navbar-static-top">  
                     <div class="navbar-header">
                       <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse">
@@ -64,41 +64,19 @@
                       <a href="/" class="navbar-brand logo">b</a>
                     </div>
                     <nav class="collapse navbar-collapse" role="navigation">
-                    <form class="navbar-form navbar-left">
-                        <div class="input-group input-group-sm" style="max-width:360px;">
-                          <input type="text" class="form-control" placeholder="Search" name="srch-term" id="srch-term">
-                          <div class="input-group-btn">
-                            <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
-                          </div>
-                        </div>
-                    </form>
-                    <ul class="nav navbar-nav">
-                      <li>
-                        <a href="#"><i class="glyphicon glyphicon-home"></i> Home</a>
-                      </li>
-                      <li>
-                        <a href="#postModal" role="button" data-toggle="modal"><i class="glyphicon glyphicon-plus"></i> Post</a>
-                      </li>
-                      <li>
-                        <a href="#"><span class="badge">badge</span></a>
-                      </li>
-                    </ul>
                     <ul class="nav navbar-nav navbar-right">
                       <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i></a>
-                        <ul class="dropdown-menu">
-                          <li><a href="">More</a></li>
-                          <li><a href="">More</a></li>
-                          <li><a href="">More</a></li>
-                          <li><a href="">More</a></li>
-                          <li><a href="">More</a></li>
-                        </ul>
+                        <br>  
+                         <form action="viewProfile" method="POST" >
+                                    <input type="submit" name="viewProfile" value="Home">
+                                    <input type="hidden" name="profileID" value="{{zid}}">
+                                    <input type="hidden" name="rootID" value="{{zid}}">
+                        </form>
                       </li>
                     </ul>
                     </nav>
                 </div>
-                <!-- /top nav -->
-              
+                <!-- end top nav -->
                 <div class="padding">
                     <div class="full col-sm-9">
                       
@@ -111,7 +89,7 @@
                               <div class="panel panel-default">
                                 <div class="panel-body">
                                   <p class="lead">Hello {{name}}</p>
-s                                  <p>
+                                  <p>
                                     <img src="static/{{image}}" height="200" width="200"><br>
                                         <li>{{zid}}<br></li>
                                         <li>{{name}}<br></li>
@@ -126,16 +104,26 @@ s                                  <p>
                           
                           <!-- main col right -->
                           <div class="col-sm-7">
-                                <div class="well"> 
-                                   <form class="form">
-                                    <h4>Sign-up</h4>
+                              <div class="well"> 
+                                   
+                                    <h4>Search Mates</h4>
                                     <div class="input-group text-center">
-                                    <input type="text" class="form-control input-lg" placeholder="Enter your email address">
-                                      <span class="input-group-btn"><button class="btn btn-lg btn-primary" type="button">OK</button></span>
+                                    <form action="search" method="POST">
+                                       <p><input type="text" class="form-control input-lg" placeholder="Search Mates" name="matesearch"><br><input type="submit" name="mateSearch" value="Search">
+                                       <input type="hidden" name="profileID" value="{{zid}}"><p>
+                                    </form>
                                     </div>
-                                  </form>
                                 </div>
-                                {%for row in postRS:%} 
+                                 <div class="well"> 
+                                    <h4>Search Posts</h4>
+                                    <div class="input-group text-center">
+                                    <form action="searchPost" method="POST">
+                                       <p><input type="text" class="form-control input-lg" placeholder="Search Mates" name="postsearch"><br><input type="submit" name="mateSearch" value="Search">
+                                       <input type="hidden" name="profileID" value="{{zid}}"><p>
+                                    </form>
+                                    </div>
+                                </div>
+                                {%for row in results:%} 
                                <div class="panel panel-default">
                                  <div class="panel-heading"><a href="#" class="pull-right">View all</a> <h4>{{row[5]}}</h4></div>
                                   <div class="panel-body">
@@ -143,8 +131,6 @@ s                                  <p>
                                     {{row[2]}}
                                     </p>
                                     <div class="clearfix"></div>
-                                    <hr>
-                                    Design, build, test, and prototype using Bootstrap in real-time from your Web browser. Bootply combines the power of hand-coded HTML, CSS and JavaScript with the benefits of responsive design using Bootstrap. Find and showcase Bootstrap-ready snippets in the 100% free Bootply.com code repository.
                                   </div>
                                </div>
                                 {%endfor%}

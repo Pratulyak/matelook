@@ -45,30 +45,30 @@ def login():
 			mates.append(row[0])
 			mateImages.append(row[1])
 		messageType = "post"
-		curs.execute("select * from messages where from_user=(?) and type =(?) order by time",(zid,str(messageType)))
+		curs.execute("select * from messages where from_user=(?) and type =(?) order by time DESC",(zid,str(messageType)))
 		postRS = curs.fetchall()
 		commentRS = []
 		#replyRS 
-		for t in postRS:
+		"""for t in postRS:
 			messageType = "comment"
 			index_path = t[12]
 			index_path += "%"
 			curs.execute("select * from messages where index_path like (?) and type=(?) order by rowid",(index_path,str(messageType)))
 			commentRS.append(curs.fetchone())
 
-			#for k in commentRS:
-			#	messageType = "reply"
-			#	curs.execute("select * from messages where parent_msg_dir=(?) and type=(?)",(k[9],str(messageType)))
-			#	replyRS.append(curs.fetchall())
+			for k in commentRS:
+				messageType = "reply"
+				curs.execute("select * from messages where parent_msg_dir=(?) and type=(?)",(k[9],str(messageType)))
+				replyRS.append(curs.fetchall())
+"""
 
-
-	if password == passw:
-		session['user'] = zid
-		g.user = session['user']
-		return render_template("profile.html", zid=zid, image=image,name=fullname,email=email,program=program,suburb=homesuburb
-		,longitude=longitude,latitude=latitude,birthday=birthday,mates=mates,mateImages=mateImages, postRS=postRS,commentRS=commentRS)
-	else:
-		return render_template("login.html",error=error)
+		if password == passw:
+			session['user'] = zid
+			g.user = session['user']
+			return render_template("profile.html", zid=zid, image=image,name=fullname,email=email,program=program,suburb=homesuburb
+			,longitude=longitude,latitude=latitude,birthday=birthday,mates=mates,mateImages=mateImages, postRS=postRS)
+		else:
+			return render_template("login.html",error=error)
 
 @app.route('/updatePost',methods=['POST','GET'])
 def updatePost():
@@ -80,8 +80,37 @@ def updatePost():
 	time = datetime.datetime.now()
 
 	curs.execute("insert into messages ('from_user','message','time','type') values((?),(?),(?),(?))",(fromuser,Message,time,postype))
+	conn.commit()
+	curs.execute("select * from messages where message=(?) ",(Message,))
 
-	return render_template("guess.html")
+	curs.execute("select * from User where zid = (?)",(fromuser,))
+	for temp in curs.fetchall():
+		#temp = curs.fetchall()
+		#temp =temp.split(",")
+		zid = temp[0]
+		fullname = temp[1]
+		email = temp[2]
+		program = temp[4]
+		homesuburb= temp[6]
+		longitude = temp[9]
+		latitude = temp[10]
+		birthday = temp[11]
+		image =  "dataset/" + zid + "/profile.jpg"#temp[12]
+		password=temp[3]
+	curs.execute("select zidB,profile from mates where zidA = (?)",(zid,))
+	mates = []
+	mateImages= []
+	for row in curs.fetchall():
+		mates.append(row[0])
+		mateImages.append(row[1])
+	messageType = "post"
+	curs.execute("select * from messages where from_user=(?) and type =(?) order by time DESC",(zid,str(messageType)))
+	postRS = curs.fetchall()
+
+	results = curs.fetchall();
+
+	return render_template("profile.html", zid=zid, image=image,name=fullname,email=email,program=program,suburb=homesuburb
+		,longitude=longitude,latitude=latitude,birthday=birthday,mates=mates,mateImages=mateImages, postRS=postRS)
 @app.route('/viewProfile',methods=['POST','GET'])
 def viewProfile():
 	profileID = request.form['profileID']
@@ -104,13 +133,12 @@ def viewProfile():
 		curs.execute("select zidB,profile from mates where zidA = (?)",(root,))
 		mates = []
 		mateImages= []
-		messageType = "post"
-		curs.execute("select * from messages where from_user=(?) and type =(?)",(profileID,str(messageType)))
-		postRS = curs.fetchall()
-
 		for row in curs.fetchall():
 			mates.append(row[0])
 			mateImages.append(row[1])
+		messageType = "post"
+		curs.execute("select * from messages where from_user=(?) and type =(?) order by time DESC",(profileID,str(messageType)))
+		postRS = curs.fetchall()
 		return render_template("profile.html", zid=root, image=image,name=fullname,email=email,program=program,suburb=homesuburb,longitude=longitude,latitude=latitude,birthday=birthday,mates=mates,mateImages=mateImages,postRS=postRS)
 	else:
 		curs.execute("select * from User where zid = (?)",(profileID,))
@@ -135,19 +163,11 @@ def viewProfile():
 			mates.append(row[0])
 			mateImages.append(row[1])
 		messageType = "post"
-		curs.execute("select * from messages where from_user=(?) and type =(?)",(zidB,str(messageType)))
+		curs.execute("select * from messages where from_user=(?) and type =(?) order by time DESC",(str(profileID),str(messageType)))
 		postRS1 = curs.fetchall()
-
+		#return render_template("guess.html",results=postRS1,profileID=profileID,)
 		return render_template("viewProfile.html", zid=zidB, image=image,name=fullname,email=email,program=program,suburb=homesuburb
-		,longitude=longitude,latitude=latitude,birthday=birthday,mates=mates,mateImages=mateImages,root=root,postRS=postRS1)
-		"""
-		return render_template("guess.html",submit=temp)
-		session['user'] = zid
-	g.user = session['user']
-	return render_template("profile.html",rootid=root, zid=zid, image=image,name=fullname,email=email,program=program,suburb=homesuburb
-		,longitude=longitude,latitude=latitude,birthday=birthday,mates=mates,mateImages=mateImages)
-	"""
-	
+		,longitude=longitude,latitude=latitude,birthday=birthday,mates=mates,mateImages=mateImages,root=root, results=postRS1)	
 
 @app.route('/logout',methods=['POST','GET'])
 def logout():
@@ -155,6 +175,38 @@ def logout():
 	session.pop('user', None)
 	return render_template("login.html")
 
+@app.route('/redirect',methods=['POST','GET'])
+def redirect():
+	return render_template("register.html")
+
+@app.route('/register',methods=['POST','GET'])
+def register():
+	zid=request.form['zid']
+	fullname=request.form['fullname']
+	email=request.form['email']
+	password=request.form['password']
+	program=request.form['program']
+	homesuburb=request.form['homesuburb']
+	latitude=request.form['latitude']
+	longitude=request.form['longitude']
+	birthday=request.form['birthday']
+	image=request.form['image']
+
+	curs.execute("select * from User where zid=(?)",(zid,))
+	t=curs.fetchall()
+	rowcount=curs.rowcount
+	if rowcount<=0:
+		curs.execute("insert into User ('zid','full_name','email','password','program','home_suburb','home_longitude','home_latitude','birthday','profile') values((?),(?),(?),(?),(?),(?),(?),(?)
+,(?),(?))",(zid,fullname,email,password,program,homesuburb,longitude,latitude,birthday,image))
+		conn.commit()
+		curs.execute("select * from messages where fromuser=(?)",zid)
+		postRS=curs.fetchall()
+		return render_template("profile.html", zid=zid, image=image,name=fullname,email=email,program=program,suburb=homesuburb
+		,longitude=longitude,latitude=latitude,birthday=birthday,mates=mates,mateImages=mateImages, postRS=postRS)
+	else:
+		error = "You already have an account. Please Login!"
+		return render_template("guess.html",t=t,rowcount=rowcount)
+	return render_template("guess.html",t=t)
 @app.route('/search',methods=['POST','GET'])
 def search():
 	searchString = request.form['matesearch']
